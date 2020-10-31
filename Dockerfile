@@ -10,6 +10,7 @@ RUN apk -U upgrade && \
     php7-bcmath \
     php7-curl \
     php7-ctype \
+    php7-dom \
     php7-exif \
     php7-mbstring \
     php7-mysqli \
@@ -23,11 +24,14 @@ RUN apk -U upgrade && \
     php7-redis \
     php7-opcache \
     php7-openssl \
+    php7-phar \
     php7-sockets \
     php7-sqlite3 \
     php7-simplexml \
     php7-tokenizer \
     php7-xml \
+    php7-xmlreader \
+    php7-xmlwriter \
     php7-zip \
     php7-pecl-protobuf \
     php7-pecl-imagick \
