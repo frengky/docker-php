@@ -40,7 +40,7 @@ RUN apk -U upgrade && \
     echo "Asia/Jakarta" > /etc/timezone && \
     apk del tzdata && \
     addgroup -g 1000 app && \
-    adduser -S -D -u 1000 -s /bin/ash -h /var/www -G app app && \
+    adduser -S -D -u 1000 -s /bin/ash -h /app -G app app && \
     sed -i "s|;*date.timezone =.*|date.timezone = Asia/Jakarta|i" /etc/php7/php.ini && \
     sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo=0|i" /etc/php7/php.ini && \
     sed -i "s|;*curl.cainfo =.*|curl.cainfo=/etc/ssl/certs/ca-certificates.crt|i" /etc/php7/php.ini && \
