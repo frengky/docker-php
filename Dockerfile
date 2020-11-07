@@ -1,11 +1,29 @@
-FROM alpine:latest
+FROM alpine:latest AS pcov-ext-builder
 LABEL maintainer="frengky.lim@gmail.com"
+
+RUN apk -U upgrade && \
+    apk add --update --no-cache \
+    build-base \
+    gcc \
+    git \
+    linux-headers \
+    php7 \
+    php7-dev && \
+    git clone -b v1.0.6 https://github.com/krakjoe/pcov.git && \
+    cd pcov && \
+    phpize && \
+    ./configure --enable-pcov && \
+    make && \
+    make install && \
+    echo -en 'extension=pcov.so\npcov.directory=/app\n' > /etc/php7/conf.d/pcov.ini
+
+FROM alpine:latest
 
 RUN apk -U upgrade && \
     apk --update --no-cache add \
     tzdata \
     ca-certificates \
-    grpc protobuf \
+    grpc \
     php7 \
     php7-bcmath \
     php7-curl \
@@ -26,6 +44,7 @@ RUN apk -U upgrade && \
     php7-openssl \
     php7-phar \
     php7-sockets \
+    php7-sodium \
     php7-sqlite3 \
     php7-simplexml \
     php7-tokenizer \
@@ -44,6 +63,7 @@ RUN apk -U upgrade && \
     sed -i "s|;*date.timezone =.*|date.timezone = Asia/Jakarta|i" /etc/php7/php.ini && \
     sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo=0|i" /etc/php7/php.ini && \
     sed -i "s|;*curl.cainfo =.*|curl.cainfo=/etc/ssl/certs/ca-certificates.crt|i" /etc/php7/php.ini && \
+    sed -i "s|;*openssl.cafile=.*|openssl.cafile=/etc/ssl/certs/ca-certificates.crt|i" /etc/php7/php.ini && \
     rm -rf /var/cache/apk/*
 
 ENV DEFAULT_TZ Asia/Jakarta
@@ -53,6 +73,9 @@ ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 
 COPY --from=frengky/php-grpc /usr/lib/php7/modules/grpc.so /usr/lib/php7/modules/
 COPY --from=frengky/php-grpc /etc/php7/conf.d/grpc.ini /etc/php7/conf.d/
+
+COPY --from=pcov-ext-builder /usr/lib/php7/modules/pcov.so /usr/lib/php7/modules/
+COPY --from=pcov-ext-builder /etc/php7/conf.d/pcov.ini /etc/php7/conf.d/
 
 COPY php-fpm.conf /etc/php7/
 COPY www.conf /etc/php7/php-fpm.d/

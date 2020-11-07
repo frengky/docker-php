@@ -1,7 +1,12 @@
 # PHP docker base container
 
-Multipurpose php base container based on Alpine Linux with **php-fpm** and *all the must-have extensions*.
+Multipurpose php base container based on Alpine Linux with **php-fpm**.
 This image can be used for building your own LEMP container stack (compose).
+
+Some of the must-have extensions included here are:
+* [grpc](https://github.com/grpc/grpc/tree/master/src/php)
+* [protobuf](https://pecl.php.net/package/protobuf)
+* [pcov](https://github.com/krakjoe/pcov)
 
 ## General usage
 **Run php executable**
@@ -16,7 +21,6 @@ docker run -it --rm --name php -p 9000:9000 frengky/php php-fpm7 -F
 
 ## Docker compose usage
 **Configure as PHP FPM container**
-Examples:
 ```
 web:
   image: frengky/php
