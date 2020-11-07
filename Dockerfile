@@ -23,7 +23,6 @@ RUN apk -U upgrade && \
     apk --update --no-cache add \
     tzdata \
     ca-certificates \
-    grpc \
     php7 \
     php7-bcmath \
     php7-curl \
@@ -52,7 +51,6 @@ RUN apk -U upgrade && \
     php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
-    php7-pecl-protobuf \
     php7-pecl-imagick \
     php7-fpm && \
     cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
@@ -70,9 +68,6 @@ ENV DEFAULT_TZ Asia/Jakarta
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
-
-COPY --from=frengky/php-grpc /usr/lib/php7/modules/grpc.so /usr/lib/php7/modules/
-COPY --from=frengky/php-grpc /etc/php7/conf.d/grpc.ini /etc/php7/conf.d/
 
 COPY --from=pcov-ext-builder /usr/lib/php7/modules/pcov.so /usr/lib/php7/modules/
 COPY --from=pcov-ext-builder /etc/php7/conf.d/pcov.ini /etc/php7/conf.d/

@@ -4,8 +4,6 @@ Multipurpose php base container based on Alpine Linux with **php-fpm**.
 This image can be used for building your own LEMP container stack (compose).
 
 Some of the must-have extensions included here are:
-* [grpc](https://github.com/grpc/grpc/tree/master/src/php)
-* [protobuf](https://pecl.php.net/package/protobuf)
 * [pcov](https://github.com/krakjoe/pcov)
 
 ## General usage
