@@ -117,9 +117,7 @@ RUN \
     # Remove composer and curl
     composer clear-cache && \
     rm -f /usr/local/bin/composer && \
-    apk del curl && \
-    # Create the working directory
-    mkdir /app
+    apk del curl
 
 ENV PATH "$PATH:/root/.composer/vendor/bin"
 
