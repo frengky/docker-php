@@ -1,38 +1,37 @@
 # PHP docker base container
 
-Multipurpose php base container based on Alpine Linux with **php-fpm**.
-This image can be used for building your own LEMP container stack (compose).
-
-Some of the must-have extensions included here are:
-* [pcov](https://github.com/krakjoe/pcov)
+Multipurpose php base container based on Alpine Linux.
+This image can be used for building your own LEMP container stack (compose) also for unit testing.
 
 ## General usage
-**Run php executable**
-```
-docker run -it --rm --name php frengky/php php -v
+
+The `frengky/php:latest` is a base php container with php cli command only.
+
+Running the php cli:
+```console
+$ docker run -it --rm frengky/php php -v
 ```
 
-**RUN php-fpm instance**
-```
-docker run -it --rm --name php -p 9000:9000 frengky/php php-fpm7 -F
-```
+## Test runner version
 
-## Docker compose usage
-**Configure as PHP FPM container**
-```
-web:
-  image: frengky/php
-  volumes:
-    - ./app:/app
-  entrypoint: php-fpm7 -F
-  expose:
-    - "9000"
-  restart: always
-```
+The `frengky/php:test-runner`, is another php multipurpose container variant created for running unit tests.
+The `xdebug` php extension are not installed, since the incompatibility issue with the `pcov` extension.
 
-## Customisable config files
-| File paths |
-|---|
-|/etc/php7/php.ini|
-|/etc/php7/php-fpm.conf|
-|/etc/php7/php-fpm.d/www.conf|
+Included test coverage extension:
+* [pcov](https://github.com/krakjoe/pcov)
+
+Installed commands:
+* [phpunit](https://phpunit.de/index.html)
+* [phpcs](https://github.com/squizlabs/PHP_CodeSniffer) and [phpcbf](https://github.com/squizlabs/PHP_CodeSniffer)
+* [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
+* [security-checker](https://github.com/sensiolabs/security-checker)
+* [phpcpd](https://github.com/sebastianbergmann/phpcpd)
+* [phploc](https://github.com/sebastianbergmann/phploc)
+* [phpmd](https://phpmd.org)
+* [paratest](https://github.com/paratestphp/paratest)
+* [phpmetrics](https://www.phpmetrics.org)
+
+Example running php unit in the current directory:
+```console
+$ docker run -it --rm -v $(pwd):/app frengky/php:test-runner phpunit
+```

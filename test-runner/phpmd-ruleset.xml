@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<ruleset name="PHPMD Rule Set"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="
+                     http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        Ruleset to enforce code quality
+    </description>
+
+    <rule ref="rulesets/cleancode.xml/ElseExpression" />
+    <rule ref="rulesets/cleancode.xml/IfStatementAssignment" />
+    <rule ref="rulesets/cleancode.xml/DuplicatedArrayKey" />
+    <rule ref="rulesets/cleancode.xml/ErrorControlOperator" />
+    <rule ref="rulesets/cleancode.xml/UndefinedVariable" />
+    <!--
+    <rule ref="rulesets/cleancode.xml/BooleanArgumentFlag" />
+    <rule ref="rulesets/cleancode.xml/StaticAccess" />
+    <rule ref="rulesets/cleancode.xml/MissingImport" />
+    -->
+
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity" />
+    <rule ref="rulesets/codesize.xml/NPathComplexity" />
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+        <properties>
+            <property name="minimum" value="100" />
+            <property name="ignore-whitespace" value="false" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength">
+        <properties>
+            <property name="minimum" value="1000" />
+            <property name="ignore-whitespace" value="false" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
+        <properties>
+            <property name="minimum" value="8" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessivePublicCount">
+        <properties>
+            <property name="minimum" value="24" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyFields">
+        <properties>
+            <property name="maxfields" value="15" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="24" />
+            <property name="ignorepattern" value="(^(set|get))i" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <properties>
+            <property name="maxmethods" value="12" />
+            <property name="ignorepattern" value="(^(set|get))i" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity" />
+
+    <rule ref="rulesets/controversial.xml/Superglobals" />
+    <rule ref="rulesets/controversial.xml/CamelCaseClassName" />
+    <rule ref="rulesets/controversial.xml/CamelCasePropertyName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseMethodName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseParameterName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseVariableName" />
+
+    <rule ref="rulesets/design.xml/ExitExpression" />
+    <rule ref="rulesets/design.xml/EvalExpression" />
+    <rule ref="rulesets/design.xml/GotoStatement" />
+    <rule ref="rulesets/design.xml/NumberOfChildren">
+        <properties>
+            <property name="minimum" value="15" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/DepthOfInheritance">
+        <properties>
+            <property name="minimum" value="6" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="maximum" value="12" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/DevelopmentCodeFragment">
+        <properties>
+            <property name="unwanted-functions" value="var_dump,print_r,debug_zval_dump,debug_print_backtrace,die" />
+            <property name="ignore-namespaces" value="true" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/EmptyCatchBlock" />
+    <rule ref="rulesets/design.xml/CountInLoopExpression" />
+
+    <rule ref="rulesets/naming.xml/LongClassName">
+        <properties>
+            <property name="maximum" value="32" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortClassName">
+        <properties>
+            <property name="minimum" value="4" />
+            <property name="exceptions" value="" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="4" />
+            <property name="exceptions" value="" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="20" />
+            <property name="subtract-suffixes" value="" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortMethodName">
+        <properties>
+            <property name="minimum" value="4" />
+            <property name="exceptions" value="up,run" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass" />
+    <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
+    <rule ref="rulesets/naming.xml/BooleanGetMethodName" />
+
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" />
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
+    <rule ref="rulesets/unusedcode.xml/UnusedFormalParameter" />
+
+</ruleset>
