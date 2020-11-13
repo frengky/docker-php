@@ -1,0 +1,39 @@
+FROM alpine AS grpc-ext-builder
+
+RUN apk -U upgrade && \
+    apk add --update --no-cache \
+    git && \
+    git clone -b v1.28.1 https://github.com/grpc/grpc && \
+    cd grpc && \
+    git submodule update --init && \
+    apk del git
+
+RUN apk add --update --no-cache \
+    build-base \
+    gcc \
+    linux-headers \
+    php7 \
+    php7-dev \
+    grpc-dev && \
+    cd grpc/src/php/ext/grpc && \
+    phpize && \
+    ./configure --enable-grpc && \
+    make && \
+    make install
+
+FROM frengky/php
+LABEL maintainer="frengky.lim@gmail.com"
+
+RUN \
+    apk add --update --no-cache \
+    php7-pecl-protobuf \
+    grpc \
+    protoc && \
+    echo -en 'extension=grpc.so\n' > /etc/php7/conf.d/grpc.ini && \
+    mkdir -p /src /output && \
+    rm -rf /var/cache/apk/*
+
+COPY --from=grpc-ext-builder /usr/lib/php7/modules/grpc.so /usr/lib/php7/modules/
+COPY grpc/protoc-generate-php /usr/local/bin/
+
+CMD ["protoc-generate-php"]

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for FILE in `find /src -name "*.proto"`; do
+    echo "Processing: $FILE"
+    protoc \
+        --plugin=protoc-gen-grpc=/usr/bin/grpc_php_plugin \
+        --proto_path=/src \
+        --php_out=/output \
+        --grpc_out=/output \
+        "$FILE"
+done

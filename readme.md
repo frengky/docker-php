@@ -36,3 +36,11 @@ Example running php unit in the current directory:
 ```console
 $ docker run -it --rm -v $(pwd):/app frengky/php:test-runner phpunit
 ```
+
+## PHP gRPC version
+
+Generate php `gRPC` code from `src/*.proto` to `output/` :
+```
+docker run -it --rm --name grpc -v $(pwd)/src:/src -v $(pwd)/output:/output frengky/php-grpc
+```
+> Quick start at [grpc.io](https://grpc.io/docs/languages/php/quickstart/)
