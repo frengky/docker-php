@@ -12,7 +12,7 @@ Running the php cli:
 $ docker run -it --rm frengky/php php -v
 ```
 
-## Test runner version
+## PHP Test Runner version
 
 The `frengky/php:test-runner`, is another php multipurpose container variant created for running unit tests.
 The `xdebug` php extension are not installed, since the incompatibility issue with the `pcov` extension.
@@ -32,15 +32,21 @@ Installed commands:
 * [paratest](https://github.com/paratestphp/paratest)
 * [phpmetrics](https://www.phpmetrics.org)
 
-Example running php unit in the current directory:
+Running `phpunit` in the current directory:
 ```console
 $ docker run -it --rm -v $(pwd):/app frengky/php:test-runner phpunit
 ```
 
+Running `composer install` in the current directory:
+```console
+$ docker run -it --rm -v $(pwd):/app -v composer-data:/tmp composer install
+```
+> Note that `COMPOSER_HOME` value is set to `/tmp` in the image by default
+
 ## PHP gRPC version
 
 Generate php `gRPC` code from `src/*.proto` to `output/` :
+```console
+$ docker run -it --rm --name grpc -v $(pwd)/src:/src -v $(pwd)/output:/output frengky/php:grpc
 ```
-docker run -it --rm --name grpc -v $(pwd)/src:/src -v $(pwd)/output:/output frengky/php-grpc
-```
-> Quick start at [grpc.io](https://grpc.io/docs/languages/php/quickstart/)
+> For PHP gRPC quick start guide visit [grpc.io](https://grpc.io/docs/languages/php/quickstart/)
