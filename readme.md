@@ -21,6 +21,7 @@ Included test coverage extension:
 * [pcov](https://github.com/krakjoe/pcov)
 
 Installed commands:
+* [composer](https://getcomposer.org)
 * [phpunit](https://phpunit.de/index.html)
 * [phpcs](https://github.com/squizlabs/PHP_CodeSniffer) and [phpcbf](https://github.com/squizlabs/PHP_CodeSniffer)
 * [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)

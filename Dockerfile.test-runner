@@ -1,6 +1,4 @@
-ARG ALPINE_VERSION=latest
-
-FROM alpine:${ALPINE_VERSION} AS pcov-ext-builder
+FROM alpine AS pcov-ext-builder
 
 ARG PCOV_VERSION=v1.0.6
 
@@ -20,75 +18,25 @@ RUN apk -U upgrade && \
     make install && \
     echo -en 'extension=pcov.so\npcov.enabled=1\npcov.directory=app\n' > /etc/php7/conf.d/pcov.ini
 
-FROM alpine:${ALPINE_VERSION}
+FROM frengky/php
 LABEL maintainer="frengky.lim@gmail.com"
-
-ARG PHPUNIT_VERSION=9
-ARG PHPCSFIXER_VERSION=v2
-ARG TIMEZONE=Asia/Jakarta
-ARG APP_UID=1000
-ARG APP_GID=1000
-
-RUN apk -U upgrade && \
-    apk --update --no-cache add \
-    tzdata \
-    ca-certificates \
-    php7 \
-    php7-bcmath \
-    php7-curl \
-    php7-ctype \
-    php7-dom \
-    php7-exif \
-    php7-mbstring \
-    php7-mysqli \
-    php7-fileinfo \
-    php7-gd \
-    php7-pgsql \
-    php7-pdo_mysql \
-    php7-pdo_pgsql \
-    php7-pdo_sqlite \
-    php7-pcntl \
-    php7-redis \
-    php7-opcache \
-    php7-openssl \
-    php7-phar \
-    php7-sockets \
-    php7-sodium \
-    php7-sqlite3 \
-    php7-simplexml \
-    php7-tokenizer \
-    php7-xml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-zip \
-    php7-pecl-imagick && \
-    cp "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
-    echo ${TIMEZONE} > /etc/timezone && \
-    apk del tzdata && \
-    addgroup -g ${APP_GID} app && \
-    adduser -S -D -u ${APP_UID} -s /bin/ash -h /app -G app app && \
-    sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.ini && \
-    sed -i "s|;*curl.cainfo =.*|curl.cainfo=/etc/ssl/certs/ca-certificates.crt|i" /etc/php7/php.ini && \
-    sed -i "s|;*openssl.cafile=.*|openssl.cafile=/etc/ssl/certs/ca-certificates.crt|i" /etc/php7/php.ini && \
-    rm -rf /var/cache/apk/*
-
-ENV DEFAULT_TZ ${TIMEZONE}
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
 
 COPY --from=pcov-ext-builder /usr/lib/php7/modules/pcov.so /usr/lib/php7/modules/
 COPY --from=pcov-ext-builder /etc/php7/conf.d/pcov.ini /etc/php7/conf.d/
 
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+
 RUN \
     apk --update --no-cache add curl && \
+    sed -i "s|memory_limit =.*|memory_limit = -1|i" /etc/php7/php.ini && \
     # https://phpunit.de/index.html
-    curl -sSo /usr/local/bin/phpunit "https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar" && \
+    curl -sSo /usr/local/bin/phpunit "https://phar.phpunit.de/phpunit-latest.phar" && \
     # https://github.com/squizlabs/PHP_CodeSniffer
     curl -sSo /usr/local/bin/phpcs "https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar" && \
     curl -sSo /usr/local/bin/phpcbf "https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar" && \
     # https://github.com/FriendsOfPHP/PHP-CS-Fixer
-    curl -sSo /usr/local/bin/php-cs-fixer "https://cs.symfony.com/download/php-cs-fixer-${PHPCSFIXER_VERSION}.phar" && \
+    curl -sSo /usr/local/bin/php-cs-fixer "https://cs.symfony.com/download/php-cs-fixer-v2.phar" && \
     # https://github.com/sensiolabs/security-checker
     curl -sSo /usr/local/bin/security-checker "https://get.sensiolabs.org/security-checker.phar" && \
     # https://github.com/sebastianbergmann/phpcpd
@@ -110,15 +58,15 @@ RUN \
         && \
     # Download composer
     curl -sS "https://getcomposer.org/installer" | php -- --install-dir=/usr/local/bin --filename=composer && \
-    # https://github.com/paratestphp/paratest
-    composer --prefer-dist --no-interaction --no-progress global require 'brianium/paratest' && \
-    # https://www.phpmetrics.org/
-    composer --prefer-dist --no-interaction --no-progress global require 'phpmetrics/phpmetrics' && \
+    composer --prefer-dist --no-interaction --no-progress global require \
+        # https://github.com/paratestphp/paratest
+        'brianium/paratest' \
+        # https://www.phpmetrics.org/
+        'phpmetrics/phpmetrics' && \
     # Remove composer and curl
-    composer clear-cache && \
-    rm -f /usr/local/bin/composer && \
-    apk del curl
+    apk del curl && \
+    rm -rf /var/cache/apk/*
 
-ENV PATH "$PATH:/root/.composer/vendor/bin"
+ENV PATH "$PATH:/tmp/vendor/bin"
 
 WORKDIR /app

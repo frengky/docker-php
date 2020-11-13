@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="PHPMD Rule Set"
+<ruleset name="My first PHPMD rule set"
          xmlns="http://pmd.sf.net/ruleset/1.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
@@ -112,7 +112,7 @@
     <rule ref="rulesets/naming.xml/ShortVariable">
         <properties>
             <property name="minimum" value="4" />
-            <property name="exceptions" value="" />
+            <property name="exceptions" value="app" />
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
