@@ -21,6 +21,7 @@ RUN apk -U upgrade && \
     php7-mysqli \
     php7-fileinfo \
     php7-gd \
+    php7-iconv \
     php7-pgsql \
     php7-pdo_mysql \
     php7-pdo_pgsql \
