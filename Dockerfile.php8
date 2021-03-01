@@ -1,0 +1,63 @@
+ARG ALPINE_VERSION=latest
+
+FROM alpine:${ALPINE_VERSION}
+LABEL maintainer="frengky.lim@gmail.com"
+
+ARG TIMEZONE=Asia/Jakarta
+ARG APP_UID=1000
+ARG APP_GID=1000
+
+RUN apk --update --no-cache add \
+    tzdata \
+    ca-certificates \
+    protoc \
+    grpc \
+    php8 \
+    php8-bcmath \
+    php8-curl \
+    php8-ctype \
+    php8-dom \
+    php8-exif \
+    php8-mbstring \
+    php8-mysqli \
+    php8-fileinfo \
+    php8-gd \
+    php8-iconv \
+    php8-pgsql \
+    php8-pdo_mysql \
+    php8-pdo_pgsql \
+    php8-pdo_sqlite \
+    php8-pcntl \
+    php8-redis \
+    php8-opcache \
+    php8-openssl \
+    php8-phar \
+    php8-sockets \
+    php8-sodium \
+    php8-sqlite3 \
+    php8-simplexml \
+    php8-tokenizer \
+    php8-xml \
+    php8-xmlreader \
+    php8-xmlwriter \
+    php8-zip \
+    php8-pecl-imagick && \
+    apk --update --no-cache add php8-pecl-protobuf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
+    apk --update --no-cache add php8-pecl-grpc --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
+    ln -s /usr/bin/php8 /usr/bin/php && \
+    cp "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
+    echo ${TIMEZONE} > /etc/timezone && \
+    apk del tzdata && \
+    addgroup -g ${APP_GID} app && \
+    adduser -S -D -u ${APP_UID} -s /bin/ash -h /app -G app app && \
+    sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php8/php.ini && \
+    sed -i "s|;*curl.cainfo =.*|curl.cainfo=/etc/ssl/certs/ca-certificates.crt|i" /etc/php8/php.ini && \
+    sed -i "s|;*openssl.cafile=.*|openssl.cafile=/etc/ssl/certs/ca-certificates.crt|i" /etc/php8/php.ini && \
+    rm -rf /var/cache/apk/*
+
+ENV DEFAULT_TZ ${TIMEZONE}
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
+
+COPY protoc-php /usr/local/bin/

@@ -7,10 +7,11 @@ ARG TIMEZONE=Asia/Jakarta
 ARG APP_UID=1000
 ARG APP_GID=1000
 
-RUN apk -U upgrade && \
-    apk --update --no-cache add \
+RUN apk --update --no-cache add \
     tzdata \
     ca-certificates \
+    protoc \
+    grpc \
     php7 \
     php7-bcmath \
     php7-curl \
@@ -40,7 +41,9 @@ RUN apk -U upgrade && \
     php7-xmlreader \
     php7-xmlwriter \
     php7-zip \
+    php7-pecl-protobuf \
     php7-pecl-imagick && \
+    apk --update --no-cache add php7-pecl-grpc --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
     cp "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
     echo ${TIMEZONE} > /etc/timezone && \
     apk del tzdata && \
@@ -55,3 +58,5 @@ ENV DEFAULT_TZ ${TIMEZONE}
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
+
+COPY protoc-php /usr/local/bin/

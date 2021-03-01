@@ -6,6 +6,7 @@ This image can be used for building your own LEMP container stack (compose) also
 ## General usage
 
 The `frengky/php:latest` is a base php container with php cli command only.
+Available variants `frengky/php:8`, `frengky/php:7`, `frengky/php:7-test-runner`
 
 Running the php cli:
 ```console
@@ -14,7 +15,7 @@ $ docker run -it --rm frengky/php php -v
 
 ## PHP Test Runner version
 
-The `frengky/php:test-runner`, is another php multipurpose container variant created for running unit tests.
+The `frengky/php:7-test-runner`, is another php multipurpose container variant created for running unit tests.
 The `xdebug` php extension are not installed, since the incompatibility issue with the `pcov` extension.
 
 Included test coverage extension:
@@ -34,7 +35,7 @@ Installed commands:
 
 Running `phpunit` in the current directory:
 ```console
-$ docker run -it --rm -v $(pwd):/app frengky/php:test-runner phpunit
+$ docker run -it --rm -v $(pwd):/app frengky/php:7-test-runner phpunit
 ```
 
 Running `composer install` in the current directory:
@@ -47,6 +48,6 @@ $ docker run -it --rm -v $(pwd):/app -v composer-data:/tmp composer install
 
 Generate php `gRPC` code from `src/*.proto` to `output/` :
 ```console
-$ docker run -it --rm --name grpc -v $(pwd)/src:/src -v $(pwd)/output:/output frengky/php:grpc
+$ docker run -it --rm --name grpc -v $(pwd):/app frengky/php protoc-php /app/src /app/output
 ```
 > For PHP gRPC quick start guide visit [grpc.io](https://grpc.io/docs/languages/php/quickstart/)

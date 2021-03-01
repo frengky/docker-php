@@ -1,4 +1,6 @@
-FROM alpine AS pcov-ext-builder
+ARG ALPINE_VERSION=latest
+
+FROM alpine:${ALPINE_VERSION} AS pcov-ext-builder
 
 ARG PCOV_VERSION=v1.0.6
 
@@ -18,7 +20,7 @@ RUN apk -U upgrade && \
     make install && \
     echo -en 'extension=pcov.so\npcov.enabled=1\npcov.directory=app\n' > /etc/php7/conf.d/pcov.ini
 
-FROM frengky/php
+FROM frengky/php:7
 LABEL maintainer="frengky.lim@gmail.com"
 
 COPY --from=pcov-ext-builder /usr/lib/php7/modules/pcov.so /usr/lib/php7/modules/
