@@ -44,10 +44,7 @@ $ docker run -it --rm -v $(pwd):/app -v composer-data:/tmp composer install
 ```
 > Note that `COMPOSER_HOME` value is set to `/tmp` in the image by default
 
-## PHP gRPC version
+## gRPC and protobuf
 
-Generate php `gRPC` code from `src/*.proto` to `output/` :
-```console
-$ docker run -it --rm --name grpc -v $(pwd):/app frengky/php protoc-php /app/src /app/output
-```
+To generate php source file from `*.proto` file, please see [frengky/protobuf](https://github.com/frengky/docker-protobuf)
 > For PHP gRPC quick start guide visit [grpc.io](https://grpc.io/docs/languages/php/quickstart/)
