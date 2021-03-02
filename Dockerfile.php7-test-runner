@@ -40,7 +40,7 @@ RUN \
     # https://github.com/FriendsOfPHP/PHP-CS-Fixer
     curl -sSo /usr/local/bin/php-cs-fixer "https://cs.symfony.com/download/php-cs-fixer-v2.phar" && \
     # https://github.com/sensiolabs/security-checker
-    curl -sSo /usr/local/bin/security-checker "https://get.sensiolabs.org/security-checker.phar" && \
+    # curl -sSo /usr/local/bin/security-checker "https://get.sensiolabs.org/security-checker.phar" && \
     # https://github.com/sebastianbergmann/phpcpd
     curl -sSo /usr/local/bin/phpcpd "https://phar.phpunit.de/phpcpd.phar" && \
     # https://github.com/sebastianbergmann/phploc
@@ -53,7 +53,7 @@ RUN \
         /usr/local/bin/phpcs \
         /usr/local/bin/phpcbf \
         /usr/local/bin/php-cs-fixer \
-        /usr/local/bin/security-checker \
+        # /usr/local/bin/security-checker \
         /usr/local/bin/phpcpd \
         /usr/local/bin/phploc \
         /usr/local/bin/phpmd \
