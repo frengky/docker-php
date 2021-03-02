@@ -10,8 +10,6 @@ ARG APP_GID=1000
 RUN apk --update --no-cache add \
     tzdata \
     ca-certificates \
-    protoc \
-    grpc \
     php7 \
     php7-bcmath \
     php7-curl \
@@ -58,5 +56,3 @@ ENV DEFAULT_TZ ${TIMEZONE}
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV CURL_CA_BUNDLE /etc/ssl/certs/ca-certificates.crt
-
-COPY protoc-php /usr/local/bin/
