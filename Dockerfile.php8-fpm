@@ -1,0 +1,22 @@
+FROM frengky/php:8
+LABEL maintainer="frengky.lim@gmail.com"
+
+ARG APP_UID=1000
+ARG APP_GID=1000
+
+RUN apk --update --no-cache add php8-fpm && \
+    sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo=0|i" /etc/php8/php.ini && \
+    addgroup -g ${APP_GID} app && \
+    adduser -S -D -u ${APP_UID} -s /bin/ash -h /app -G app app && \
+    rm -f /var/cache/apk/*
+
+COPY php8-fpm.conf /etc/php8/
+COPY www.conf /etc/php8/php-fpm.d/
+COPY docker-entrypoint.php8-fpm.sh /usr/local/bin/docker-entrypoint.sh
+
+VOLUME /app
+WORKDIR /app
+EXPOSE 9000
+
+ENTRYPOINT [ "docker-entrypoint.sh" ]
+CMD [ "php-fpm8", "-F" ]
