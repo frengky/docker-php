@@ -3,6 +3,11 @@ set -eo pipefail
 
 if [ "$1" = "php-fpm8" ]; then
 
+    # PHP_INI_SENDMAIL_PATH="/usr/sbin/sendmail -S your-mail-host:3025 -t -i"
+    if [ -n "$PHP_INI_SENDMAIL_PATH" ]; then
+        sed -i "s|;*sendmail_path =.*|sendmail_path=\"${PHP_INI_SENDMAIL_PATH}\"|i" /etc/php8/php.ini
+    fi
+
     if [ -n "$PHP_EXT_XDEBUG" ]; then
         echo -en ';extension=pcov.so\n;pcov.enabled=1\n;pcov.directory=app\n' > /etc/php8/conf.d/pcov.ini
         printf "\
