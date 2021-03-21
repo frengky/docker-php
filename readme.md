@@ -2,13 +2,21 @@
 
 Multipurpose PHP docker image based on [Alpine Linux](https://alpinelinux.org/).
 This image can be used for building your own LEMP container stack (compose) also for unit testing.
-Available variants `frengky/php:7`, `frengky/php:7-fpm`, `frengky/php:8`, `frengky/php:8-fpm`
+
+**Available variants:**
+
+| PHP Version | Variants |
+|-------------|----------|
+| 7 | `frengky/php:7`, `frengky/php:7-fpm`, `frengky/php:7-swoole` |
+| 8 | `frengky/php:8`, `frengky/php:8-fpm`, `frengky/php:8-swoole` |
+
 
 Included extensions:
 * [pcov v1.0.6](https://github.com/krakjoe/pcov)
 * [xdebug v3](https://xdebug.org/)
 * [grpc](https://grpc.io/docs/languages/php/quickstart/)
 * [protobuf](https://developers.google.com/protocol-buffers/)
+* [swoole](https://www.swoole.co.uk/)
 
 ## PHP CLI
 
@@ -24,7 +32,7 @@ Example command to run php-fpm, with (`xdebug` enabled, `pcov` are automatically
 $ docker run -it --rm -v $(pwd):/app -p 9000:9000 -e PHP_EXT_XDEBUG=1 -e XDEBUG_CONFIG="client_host=host.docker.internal" frengky/php:7-fpm
 ```
 
-*Environment variables*:
+*Environment variables:*
 
 | Name | Description | Example Value |
 |------|-------------|---------------|
