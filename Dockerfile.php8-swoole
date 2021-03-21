@@ -1,0 +1,28 @@
+ARG ALPINE_VERSION=latest
+
+FROM alpine:${ALPINE_VERSION} AS swoole-ext-builder
+
+ARG SWOOLE_VERSION=v4.6.4
+
+RUN apk -U upgrade && \
+    apk add --update --no-cache \
+    build-base \
+    gcc \
+    git \
+    linux-headers \
+    openssl-dev curl-dev \
+    php8 \
+    php8-dev && \
+    git clone -b ${SWOOLE_VERSION} https://github.com/swoole/swoole-src.git && \
+    cd swoole-src && \
+    phpize8 && \
+    ./configure --enable-openssl --enable-sockets --enable-http2 --enable-mysqlnd --enable-swoole-json --enable-swoole-curl --with-php-config=/usr/bin/php-config8 && \
+    make && \
+    make install && \
+    echo -en 'extension=swoole.so\n' > /etc/php8/conf.d/swoole.ini
+
+FROM frengky/php:8
+LABEL maintainer="frengky.lim@gmail.com"
+
+COPY --from=swoole-ext-builder /usr/lib/php8/modules/swoole.so /usr/lib/php8/modules/
+COPY --from=swoole-ext-builder /etc/php8/conf.d/swoole.ini /etc/php8/conf.d/
