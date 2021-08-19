@@ -2,7 +2,7 @@ ARG ALPINE_VERSION=latest
 
 FROM alpine:${ALPINE_VERSION} AS swoole-ext-builder
 
-ARG SWOOLE_VERSION=v4.6.4
+ARG SWOOLE_VERSION=v4.7.1
 
 RUN apk -U upgrade && \
     apk add --update --no-cache \

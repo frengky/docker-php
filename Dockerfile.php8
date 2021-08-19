@@ -2,7 +2,7 @@ ARG ALPINE_VERSION=latest
 
 FROM alpine:${ALPINE_VERSION} AS pcov-ext-builder
 
-ARG PCOV_VERSION=v1.0.6
+ARG PCOV_VERSION=v1.0.9
 
 RUN apk -U upgrade && \
     apk add --update --no-cache \
