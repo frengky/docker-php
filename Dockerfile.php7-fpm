@@ -4,7 +4,9 @@ LABEL maintainer="frengky.lim@gmail.com"
 ARG APP_UID=1000
 ARG APP_GID=1000
 
-RUN apk --update --no-cache add php7-fpm && \
+RUN apk -U upgrade && \
+    apk --no-cache add \
+    php7-fpm && \
     sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo=0|i" /etc/php7/php.ini && \
     addgroup -g ${APP_GID} app && \
     adduser -S -D -u ${APP_UID} -s /bin/ash -h /app -G app app && \

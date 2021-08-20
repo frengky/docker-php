@@ -1,11 +1,12 @@
-ARG ALPINE_VERSION=latest
+FROM alpine:3.14 AS pcov-ext-builder
 
-FROM alpine:${ALPINE_VERSION} AS pcov-ext-builder
-
+ARG ALPINE_MIRROR=https://download.nus.edu.sg/mirror/alpine/v3.14
 ARG PCOV_VERSION=v1.0.9
 
-RUN apk -U upgrade && \
-    apk add --update --no-cache \
+RUN echo ${ALPINE_MIRROR}/main > /etc/apk/repositories && \
+    echo ${ALPINE_MIRROR}/community >> /etc/apk/repositories && \
+    apk -U upgrade && \
+    apk --no-cache add \
     build-base \
     gcc \
     git \
@@ -30,7 +31,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /tmp
 
 RUN \
-    apk --update --no-cache add curl && \
+    apk --no-cache add curl && \
     sed -i "s|memory_limit =.*|memory_limit = -1|i" /etc/php7/php.ini && \
     # https://phpunit.de/index.html
     curl -sSo /usr/local/bin/phpunit "https://phar.phpunit.de/phpunit-latest.phar" && \

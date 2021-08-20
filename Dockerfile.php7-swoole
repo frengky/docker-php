@@ -1,11 +1,12 @@
-ARG ALPINE_VERSION=latest
+FROM alpine:3.14 AS swoole-ext-builder
 
-FROM alpine:${ALPINE_VERSION} AS swoole-ext-builder
-
+ARG ALPINE_MIRROR=https://download.nus.edu.sg/mirror/alpine/v3.14
 ARG SWOOLE_VERSION=v4.7.1
 
-RUN apk -U upgrade && \
-    apk add --update --no-cache \
+RUN echo ${ALPINE_MIRROR}/main > /etc/apk/repositories && \
+    echo ${ALPINE_MIRROR}/community >> /etc/apk/repositories && \
+    apk -U upgrade && \
+    apk --no-cache add \
     build-base \
     gcc \
     git \

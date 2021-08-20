@@ -1,11 +1,12 @@
-ARG ALPINE_VERSION=latest
+FROM alpine:3.14 AS pcov-ext-builder
 
-FROM alpine:${ALPINE_VERSION} AS pcov-ext-builder
-
+ARG ALPINE_MIRROR=https://download.nus.edu.sg/mirror/alpine/v3.14
 ARG PCOV_VERSION=v1.0.9
 
-RUN apk -U upgrade && \
-    apk add --update --no-cache \
+RUN echo ${ALPINE_MIRROR}/main > /etc/apk/repositories && \
+    echo ${ALPINE_MIRROR}/community >> /etc/apk/repositories && \
+    apk -U upgrade && \
+    apk --no-cache add \
     build-base \
     gcc \
     git \
@@ -20,12 +21,17 @@ RUN apk -U upgrade && \
     make install && \
     echo -en 'extension=pcov.so\npcov.enabled=1\n;pcov.directory=app\n' > /etc/php8/conf.d/pcov.ini
 
-FROM alpine:${ALPINE_VERSION}
+FROM alpine:3.14
 LABEL maintainer="frengky.lim@gmail.com"
 
+ARG ALPINE_MIRROR=https://download.nus.edu.sg/mirror/alpine/v3.14
+ARG ALPINE_EDGE=https://download.nus.edu.sg/mirror/alpine/edge
 ARG TIMEZONE=Asia/Jakarta
 
-RUN apk --update --no-cache add \
+RUN echo ${ALPINE_MIRROR}/main > /etc/apk/repositories && \
+    echo ${ALPINE_MIRROR}/community >> /etc/apk/repositories && \
+    apk -U upgrade && \
+    apk --no-cache add \
     tzdata \
     ca-certificates \
     php8 \
@@ -59,8 +65,8 @@ RUN apk --update --no-cache add \
     php8-zip \
     php8-pecl-xdebug \
     php8-pecl-imagick && \
-    apk --update --no-cache add php8-pecl-protobuf --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
-    apk --update --no-cache add php8-pecl-grpc --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
+    apk --update --no-cache add php8-pecl-protobuf -X ${ALPINE_EDGE}/community/ && \
+    apk --update --no-cache add php8-pecl-grpc -X ${ALPINE_EDGE}/testing/ && \
     ln -s /usr/bin/php8 /usr/bin/php && \
     cp "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime && \
     echo ${TIMEZONE} > /etc/timezone && \

@@ -3,16 +3,16 @@
 Multipurpose PHP docker image based on [Alpine Linux](https://alpinelinux.org/).
 This image can be used for building your own LEMP container stack (compose) also for unit testing.
 
-**Available variants:**
+**Available images:**
 
-| PHP Version | Variants |
+| PHP Version | Image Tags |
 |-------------|----------|
 | 7 | `frengky/php:7`, `frengky/php:7-fpm`, `frengky/php:7-swoole` |
-| 8 | `frengky/php:8`, `frengky/php:8-fpm`, `frengky/php:8-swoole` |
+| 8 | `frengky/php`, `frengky/php:8`, `frengky/php:fpm`, `frengky/php:8-fpm`, `frengky/php:swoole`, `frengky/php:8-swoole` |
 
 
 Included extensions:
-* [pcov v1.0.6](https://github.com/krakjoe/pcov)
+* [pcov v1.0.9](https://github.com/krakjoe/pcov)
 * [xdebug v3](https://xdebug.org/)
 * [grpc](https://grpc.io/docs/languages/php/quickstart/)
 * [protobuf](https://developers.google.com/protocol-buffers/)
